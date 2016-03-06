@@ -3,6 +3,7 @@
 namespace App;
 
 use Hootlex\Friendships\Traits\Friendable;
+use Hootlex\Friendships\Contracts as FriendableConrtact;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
