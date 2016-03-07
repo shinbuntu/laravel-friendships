@@ -23,7 +23,7 @@ trait Friendable
             'status' => Status::PENDING,
         ]);
 
-        $this->friends()->save($friendship);
+        $this->friendships()->save($friendship);
 
         return $friendship;
 
@@ -98,7 +98,7 @@ trait Friendable
             'status' => Status::BLOCKED,
         ]);
 
-        return $this->friends()->save($friendship);
+        return $this->friendships()->save($friendship);
     }
 
     /**
@@ -172,7 +172,7 @@ trait Friendable
      */
     public function hasBlocked(Model $recipient)
     {
-        return $this->friends()->whereRecipient($recipient)->whereStatus(Status::BLOCKED)->exists();
+        return $this->friendships()->whereRecipient($recipient)->whereStatus(Status::BLOCKED)->exists();
     }
 
     /**
@@ -204,22 +204,22 @@ trait Friendable
     public function getFriends($perPage = 0)
     {
         if ($perPage == 0) {
-            return $this->getFriendsQueryBuilder()->get();
+            return $this->friends()->get();
         } else {
-            return $this->getFriendsQueryBuilder()->paginate($perPage);
+            return $this->friends()->paginate($perPage);
         }
     }
 
     /**
-     * Get the query builder of the 'friend' model
+     * Get friends for the user
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    private function getFriendsQueryBuilder()
+    public function friends()
     {
         $friendships = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
-        $recipients = $friendships->lists('recipient_id')->all();
-        $senders = $friendships->lists('sender_id')->all();
+        $recipients  = $friendships->lists('recipient_id')->all();
+        $senders     = $friendships->lists('sender_id')->all();
 
         return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders));
     }
@@ -277,9 +277,11 @@ trait Friendable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * Get Friendships for the user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany|Friendship
      */
-    public function friends()
+    public function friendships()
     {
         return $this->morphMany(Friendship::class, 'sender');
     }

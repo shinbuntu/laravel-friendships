@@ -137,7 +137,14 @@ interface Friendable
     public function canBefriend($recipient);
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * Get friends for the user
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function friends();
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function friendships();
 }
