@@ -11,7 +11,7 @@ class CreateFriendshipsGroupsTable extends Migration
 
     public function up() {
 
-        Schema::create(config('friendships.tables.fr_groups_pivot'), function (Blueprint $table) {
+        Schema::create(config('friendships.tables.fr_groups_pivot'), function(Blueprint $table) {
 
             $table->integer('friendship_id')->unsigned();
             $table->morphs('friend');

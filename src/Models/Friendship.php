@@ -101,14 +101,14 @@ class Friendship extends Model
 
             $group_id = $groups_available[$group_slug];
 
-            $query->join($groups_pvt_tbl, function ($join) use ($groups_pvt_tbl, $friends_pvt_tbl, $group_id, $model) {
-                $join->on($groups_pvt_tbl . '.friendship_id', '=', $friends_pvt_tbl . '.id')
-                    ->where($groups_pvt_tbl . '.group_id', '=', $group_id)
-                    ->where(function ($query) use ($groups_pvt_tbl, $friends_pvt_tbl, $model) {
-                        $query->where($groups_pvt_tbl . '.friend_id', '!=', $model->getKey())
-                            ->where($groups_pvt_tbl . '.friend_type', '=', $model->getMorphClass());
+            $query->join($groups_pvt_tbl, function($join) use ($groups_pvt_tbl, $friends_pvt_tbl, $group_id, $model) {
+                $join->on($groups_pvt_tbl.'.friendship_id', '=', $friends_pvt_tbl.'.id')
+                    ->where($groups_pvt_tbl.'.group_id', '=', $group_id)
+                    ->where(function($query) use ($groups_pvt_tbl, $friends_pvt_tbl, $model) {
+                        $query->where($groups_pvt_tbl.'.friend_id', '!=', $model->getKey())
+                            ->where($groups_pvt_tbl.'.friend_type', '=', $model->getMorphClass());
                     })
-                    ->orWhere($groups_pvt_tbl . '.friend_type', '!=', $model->getMorphClass());
+                    ->orWhere($groups_pvt_tbl.'.friend_type', '!=', $model->getMorphClass());
             });
 
         }
@@ -125,10 +125,10 @@ class Friendship extends Model
      */
     public function scopeBetweenModels($query, $sender, $recipient)
     {
-        $query->where(function ($queryIn) use ($sender, $recipient){
-            $queryIn->where(function ($q) use ($sender, $recipient) {
+        $query->where(function($queryIn) use ($sender, $recipient){
+            $queryIn->where(function($q) use ($sender, $recipient) {
                 $q->whereSender($sender)->whereRecipient($recipient);
-            })->orWhere(function ($q) use ($sender, $recipient) {
+            })->orWhere(function($q) use ($sender, $recipient) {
                 $q->whereSender($recipient)->whereRecipient($sender);
             });
         });
