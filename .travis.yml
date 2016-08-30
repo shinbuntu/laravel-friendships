@@ -43,7 +43,7 @@ before_script:
   - yes | cp tests/Stub_User.php vendor/laravel/laravel/app/User.php
   - cd vendor/laravel/laravel
   - composer update --dev --prefer-source --no-interaction
-  - php artisan migrate
+  - php artisan migrate --force
   - cd -
 
 script:
